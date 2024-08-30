@@ -6,6 +6,14 @@
     <title>Interest calculator</title>
 </head>
 <script>
+    let clock;
+    function debouncedCI(){
+        clearTimeout(clock);
+        clock = setTimeout(()=>{
+            calculateInterest();
+        },1000)
+    }
+
     function calculateInterest(){
         
         const principle=document.getElementById("principle").value;
@@ -31,16 +39,16 @@
 <body>
     <div style="display: flex ;flex-direction: column;justify-content: center;align-items: center;margin: 40px;">
         <div style="margin: 20px;">
-            <input id="principle" type="text" placeholder="Enter principle amount">
+            <input oninput="debouncedCI()" id="principle" type="text" placeholder="Enter principle amount">
         </div>
         <div style="margin: 20px;">
-            <input id="rate" type="text" placeholder="Enter rate of interest">
+            <input oninput="debouncedCI()" id="rate" type="text" placeholder="Enter rate of interest">
         </div>
         <div style="margin: 20px;">
-            <input id="time" type="text" placeholder="Enter time period of loan">
+            <input oninput="debouncedCI()" id="time" type="text" placeholder="Enter time period of loan">
         </div>
         <div style="margin: 20px;">
-            <button onclick="calculateInterest()">Calculate Interest</button>
+            <button>Calculate Interest</button>
         </div>
         <div id="interest"></div>
     </div>
