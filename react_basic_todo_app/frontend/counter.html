@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter Button</title>
+</head>
+
+<script>
+    function incCount(){
+        const buttonEle = document.getElementById("btn");
+        const count = buttonEle.innerHTML.split(" ")[1];
+        buttonEle.innerHTML=`Counter ${parseInt(count)+1}`;
+    }
+</script>
+
+<body>
+    <div>
+        <button onclick="incCount()" id="btn" style="cursor: pointer;padding:10px;margin: 10px;">Counter 0</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App with Dom Manipulation</title>
+</head>
+
+<script>
+    let count = 0;
+    function markAsDone(id){
+        const todo = document.getElementById(id);
+        todo.children[2].innerHTML="DONE !!"
+    }
+
+    function createDomStructure(title,desc,id){
+        const parentDiv = document.createElement("div");
+        const titleChild = document.createElement("div");
+        titleChild.setAttribute("style","margin:10px;");
+        const description = document.createElement("div");
+        description.setAttribute("style","margin:10px;");
+        const compBtn = document.createElement("button");
+        compBtn.setAttribute("style","margin:10px;");
+        titleChild.innerHTML=title;
+        description.innerHTML=desc;
+        compBtn.innerHTML="Mark as Done";
+        compBtn.setAttribute("onclick",`markAsDone(${id})`)
+        parentDiv.appendChild(titleChild);
+        parentDiv.appendChild(description);
+        parentDiv.appendChild(compBtn);
+        parentDiv.setAttribute("id",id);
+        return parentDiv;
+    }
+
+    function addTodo(){
+        const title = document.getElementById("title").value;
+        const description = document.getElementById("desc").value;
+        const newDiv = createDomStructure(title,description,count);
+        const container = document.getElementById("container");
+        container.appendChild(newDiv);
+        count++;
+    }
+
+    // function updateTodo(todos){
+    //     document.getElementById("container").innerHTML="";
+    //     todos.arrays.forEach(element => {
+    //         const parentDiv = createDomStructure(element.title,element.description,elenent._id);
+            
+    //     });
+    // }
+</script>
+
+<body>
+    <!-- <div style="display: flex;flex-direction: row;"> -->
+        <div style="display:flex;flex-direction:column;justify-content: center;align-items: center;margin: 20px;">
+            <div style="margin: 10px;">
+                <input id="title" type="text" placeholder="Title">
+            </div>
+            <div style="margin: 10px;">
+                <input id="desc" type="text" placeholder="Description">
+            </div>
+            <div style="margin: 10px;">
+                <button onclick="addTodo()">Add Todo</button>
+            </div>
+            <div id="container" style="display:flex;flex-direction:column;justify-content: center;margin: 10px;">
+            </div>
+        </div>
+        
+    <!-- </div> -->
+</body>
+
+</html>
