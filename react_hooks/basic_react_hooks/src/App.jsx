@@ -1,61 +1,61 @@
-import { useEffect, useState } from 'react'
-import { Header } from './custom-components/Header'
-import { HeaderWithButton } from './custom-components/HeaderWithButton'
-
-// let globalId = 4;
-
-// function App() {
-//   const [todos,setTodos] = useState([{id:1,title:"Nitin",description:"Nitin1"},
-//     {id:2,title:"Sneha",description:"Sneha1"},
-//     {id:3,title:"Anshul",description:"Anshul1"}
-//   ]);
+import React, { useCallback, useEffect, useState } from "react"
+// let clock;
+// function App(){
+  
+//   const [todo,setTodos] = useState({title:"temp",description:"temp"});
+//   const [todoId,setTodoId] = useState(2);
+//   useEffect(()=>{
+//     clearTimeout(clock);
+//     clock =  setTimeout(()=>{
+//       fetch(`http://localhost:8080/calculate/fetchTodo/${todoId}`)
+//       .then(async (res)=>{
+//         const finalResponse = await res.json();
+//         console.log("final response : ",finalResponse)
+//         setTodos(finalResponse);
+//       })
+//     },300)
+//   },[todoId])
 
 //   return <div>
-//       <button onClick={()=>{
-//         setTodos([...todos,{id:globalId++,title:"Another Title",description:"Another Description"}]);
-//       }}>Click me to add todos</button>
-//       {todos.map((todo)=>{
-//         return <Todo key={todo.id} title={todo.title} description={todo.description}></Todo>
-//       })}
+//     <input onChange={(event)=>{
+//       console.log("Event: ",event)
+//       const value = event.target.value;
+//       if(value!="" && value!=undefined && value!=null){
+//         setTodoId(parseInt(value));
+//       }
+//     }} type="text" placeholder="Enter the id to fetch the respective todo"></input>
+    
+//     <Todo title={todo.title} description={todo.description}></Todo>
+      
 //   </div>
 // }
 
 // function Todo({title,description}){
 //   return <div>
 //     <h1>{title}</h1>
-//     <h3>{description}</h3>
+//     <h4>{description}</h4>
 //   </div>
 // }
 
-
-
 function App(){
   const [count,setCount] = useState(0);
-  useEffect(()=>{
-    console.log("use effect called")
-    alert("Hi there the component mounted for the very first time")
-  },[])
-  {console.log("Component rerendered")}
+  var a= useCallback(()=>{
+    return {}
+  },[count]);
   return <div>
-    <Component><button onClick={()=>{
+    <Todo a={a}></Todo>
+    <button onClick={()=>{
+      // a++;
       setCount(count+1);
-    }}>Counter {count}</button></Component>
-    <Component>hI there from nitin</Component>
-    <Component>Hi there from sneha</Component>
+    }}>Counter {count}</button>
   </div>
-}
+} 
 
-function TextComponent(){
+
+const Todo = React.memo(({a})=>{
+  console.log("Todo component rerenders");
   return <div>
-    Hi there
+    Hi There from the component
   </div>
-}
-
-
-function Component({children}){
-  return <div style={{border:'2px solid black'}}>
-    {children}
-  </div>
-}
-
+})
 export default App
