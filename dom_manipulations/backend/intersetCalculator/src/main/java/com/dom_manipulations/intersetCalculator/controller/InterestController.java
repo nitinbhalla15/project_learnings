@@ -17,7 +17,7 @@ public class InterestController {
 
     List<TodoResponse> todoList = List.of(new TodoResponse(2,"shopping","macbook"),
             new TodoResponse(3,"study","dsa"),
-            new TodoResponse(4,"study","porn"),
+            new TodoResponse(4,"study","hey"),
             new TodoResponse(5,"study","any1"),
             new TodoResponse(6,"study","any2"),
             new TodoResponse(7,"study","any3"),
@@ -33,6 +33,12 @@ public class InterestController {
     @GetMapping(value = "/fetchTodo")
     public ResponseEntity<List<TodoResponse>> fetchTodo(){
         return ResponseEntity.ok(todoList);
+    }
+
+    @GetMapping(value = "/fetchTodo/{id}")
+    public ResponseEntity<TodoResponse> fetchTodoById(@PathVariable("id") Integer id){
+        TodoResponse todo = todoList.stream().filter((item)->item.getId()==id).findAny().get();e
+        return ResponseEntity.ok(todo);
     }
 
 }
