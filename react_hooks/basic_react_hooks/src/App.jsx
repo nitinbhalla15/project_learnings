@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 // let clock;
 // function App(){
   
@@ -37,25 +37,86 @@ import React, { useCallback, useEffect, useState } from "react"
 //   </div>
 // }
 
+// function App(){
+//   const [count,setCount] = useState(0);
+//   var a= useCallback(()=>{
+    
+//   },[]);
+//   return <div>
+//     <Todo a={a}></Todo>
+//     <button onClick={()=>{
+//       // a++;
+//       setCount(count+1);
+//     }}>Counter {count}</button>
+//   </div>
+// } 
+
+
+// const Todo = React.memo(({a})=>{
+//   console.log("Todo component rerenders");
+//   return <div>
+//     Hi There from the component
+//   </div>
+// })
+
+
+// function App(){
+//   const [exchange1Data,setExchange1Data] = useState({});
+//   const [exchange2Data,setExchange2Data] = useState({});
+//   const [bankData,setBankData] = useState({});
+//   console.log("Parent rerendering ...")
+//   useEffect(()=>{
+//     setExchange1Data({returns:100});
+//   },[])
+//   useEffect(()=>{
+//     setExchange2Data({returns:100});
+//   },[])
+//   useEffect(()=>{
+//     setTimeout(()=>{
+//       setBankData({returns:100});
+//     },5000)
+//   },[])
+//   const myFunction = useCallback(()=>{()=>{
+//     return exchange1Data.returns + exchange2Data.returns;
+//   }},[])
+ 
+
+//   return <div>
+//     <MyCutom myFunction={myFunction}></MyCutom>
+//     <MyCutom2></MyCutom2>
+//   </div>
+// }
+
+// const MyCutom = React.memo(({myFunction})=>{
+//   console.log("My custom rerenders");
+//   return <div>
+//     Hi there
+//   </div> 
+// })
+
+// const MyCutom2 = React.memo(()=>{
+//   console.log("My Custom 2 rerenders")
+//   return <div>
+//     Hi there
+//   </div>
+// })
+
 function App(){
-  const [count,setCount] = useState(0);
-  var a= useCallback(()=>{
-    return {}
-  },[count]);
+  const divRef = useRef();
+  const firstName = "Nitin";
+  console.log("App rerenders")
+  useEffect(()=>{
+    setTimeout(()=>{
+      divRef.current.innerHTML="Sneha";
+    },5000)
+  },[])
+
   return <div>
-    <Todo a={a}></Todo>
-    <button onClick={()=>{
-      // a++;
-      setCount(count+1);
-    }}>Counter {count}</button>
+    Hi There
+    <div ref={divRef}>{firstName}</div>
   </div>
-} 
+}
 
 
-const Todo = React.memo(({a})=>{
-  console.log("Todo component rerenders");
-  return <div>
-    Hi There from the component
-  </div>
-})
+
 export default App
