@@ -24,16 +24,16 @@ import {CountContext} from './Contexts/context'
 
 //   }
 
-function App() {
-  const [count, setCount] = useState(0);
-  return <>
-    <CountContext.Provider value={count}>
-      <CountRender setCount={setCount}></CountRender>
-      {/* <Count count={count}></Count>
-      <Buttons  setCount={setCount}></Buttons> */}
-    </CountContext.Provider>
-  </>
-}
+// function App() {
+//   const [count, setCount] = useState(0);
+//   return <>
+//     <CountContext.Provider value={count}>
+//       <CountRender setCount={setCount}></CountRender>
+//       {/* <Count count={count}></Count>
+//       <Buttons  setCount={setCount}></Buttons> */}
+//     </CountContext.Provider>
+//   </>
+// }
 
 
 export default App
