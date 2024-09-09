@@ -1,8 +1,9 @@
 import { useRecoilValue } from "recoil";
-import { allTodoListAtom } from "../Store/todoAtoms";
+import {  allTodoListAtom } from "../Store/todoAtoms";
 
 export default function TodoRender(){
     const todoList=useRecoilValue(allTodoListAtom);
+    // const todoList = useRecoilValue(allTodos)
 
     return<div style={{display:"flex",flexDirection:'column',width:'50%',alignItems:'center'}}>
         <h1>ALL TODO LIST</h1>

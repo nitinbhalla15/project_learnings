@@ -1,9 +1,10 @@
-import { useSetRecoilState } from "recoil"
+import { useRecoilState, useSetRecoilState } from "recoil"
 import {  allTodoListAtom} from "../Store/todoAtoms"
 
 export default function TodoSubmittion(){
     console.log("TodoSubmittion renders...")
     const setTodoList = useSetRecoilState(allTodoListAtom)
+    // const [todo,setTodo] = useRecoilState(allTodos);
     let todoTitle;
     let todoDescription;
     let isTodoAdded=false;
@@ -19,6 +20,7 @@ export default function TodoSubmittion(){
             let todoValue = {title:todoTitle,description:todoDescription}
             if(todoTitle!=undefined && todoDescription!=undefined){
                 setTodoList(todoValue)
+                // setTodo([...todo,todoValue])
                 isTodoAdded=true;
                 setTimeout(() => {
                     isTodoAdded=false;

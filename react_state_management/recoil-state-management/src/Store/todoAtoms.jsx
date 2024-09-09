@@ -40,8 +40,8 @@ export const filteredTodoAtoms = selector({
             return;
         }
         console.log("new filter list : ",newFilterList);
-        set(filterTodos,newFilterList);
-    }
+        set(filterTodos, newFilterList);
+    }    
 })
 
 

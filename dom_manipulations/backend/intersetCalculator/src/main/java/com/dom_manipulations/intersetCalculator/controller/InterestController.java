@@ -1,5 +1,6 @@
 package com.dom_manipulations.intersetCalculator.controller;
 
+import com.dom_manipulations.intersetCalculator.dto.NotificationResponse;
 import com.dom_manipulations.intersetCalculator.dto.Response;
 import com.dom_manipulations.intersetCalculator.dto.TodoResponse;
 import org.springframework.http.HttpStatus;
@@ -37,8 +38,14 @@ public class InterestController {
 
     @GetMapping(value = "/fetchTodo/{id}")
     public ResponseEntity<TodoResponse> fetchTodoById(@PathVariable("id") Integer id){
-        TodoResponse todo = todoList.stream().filter((item)->item.getId()==id).findAny().get();e
+        TodoResponse todo = todoList.stream().filter((item)->item.getId()==id).findAny().get();
         return ResponseEntity.ok(todo);
+    }
+
+    @GetMapping(value = "/notification")
+    public ResponseEntity<NotificationResponse> fetchNotification(){
+        return ResponseEntity.ok(NotificationResponse.builder().ntiCount((int)(Math.random()*10))
+                .jobsCnt((int)(Math.random()*10)).msgCnt((int)(Math.random()*10)).notCnt((int)(Math.random()*10)).build());
     }
 
 }
