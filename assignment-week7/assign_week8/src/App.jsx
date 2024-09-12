@@ -6,6 +6,7 @@ import { BirthdayWish } from './custom-components/BirthdayWish'
 import { Suspense } from 'react'
 import { HappyBirthdayCard } from './custom-components/HappyBirthdayCard'
 import { BirthdayCard } from './custom-components/BirthdayCard'
+import { LoginOtp } from './custom-components/LoginOtp'
 
 function App() {
   
@@ -22,6 +23,7 @@ function App() {
           <BirthdayCard></BirthdayCard>
           <BirthdayCard></BirthdayCard>
         </HappyBirthdayCard>}></Route>
+        <Route path='/otp' element={<LoginOtp></LoginOtp>}></Route>
       </Routes>
     </BrowserRouter>
     </Suspense>
