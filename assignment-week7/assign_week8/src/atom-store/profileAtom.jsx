@@ -35,3 +35,8 @@ export const paraSelector = selector({
         return paragraph
     }
 })
+
+export const birthdayName = atom({
+    key:'birthdayName',
+    default:""
+})
