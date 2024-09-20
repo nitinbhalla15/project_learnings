@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -35,15 +34,18 @@ public class CustomJWTFilter extends OncePerRequestFilter {
             log.info("Checking for the auth headers...");
             final String authHeaders = request.getHeader("Authorization");
             if(authHeaders==null || !authHeaders.startsWith("Bearer")){
+                log.info("NO AUTH HEADERS PASSED ");
                 filterChain.doFilter(request,response);
                 return;
             }
             final String jwtToken = authHeaders.substring(7);
             if(jwtToken==null){
+                log.info("NO JWT TOKEN PASSED ");
                 filterChain.doFilter(request,response);
                 return;
             }
             String userDetailsFromJwt = jwtService.parseJwtToUserDetails(jwtToken);
+            log.info("Token parsed successfully to user : ",userDetailsFromJwt);
             if(userDetailsFromJwt!=null){
                 SignUpDetails userDetails = (SignUpDetails) this.userDetailsService.loadUserByUsername(userDetailsFromJwt);
                 if(userDetails!=null && jwtService.isTokenValid(jwtToken,userDetails)){

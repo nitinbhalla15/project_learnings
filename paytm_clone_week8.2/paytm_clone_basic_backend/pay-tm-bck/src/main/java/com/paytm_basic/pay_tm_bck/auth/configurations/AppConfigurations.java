@@ -3,7 +3,6 @@ package com.paytm_basic.pay_tm_bck.auth.configurations;
 
 import com.paytm_basic.pay_tm_bck.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -28,7 +28,6 @@ public class SignUpDetails implements  UserDetails {
     private String firstName;
     private String lastName;
     private String emailId;
-    @JsonIgnore
     private String password;
     @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "bnkId",referencedColumnName = "bnk_id")

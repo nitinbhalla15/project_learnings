@@ -31,6 +31,7 @@ public class JWTService {
         String userDetails = null;
         try {
             userDetails = parseSingleClaims(jwtToken,Claims::getSubject);
+            log.info("Token parsed successfully");
         }catch (Exception e){
             log.error("Error while parsing user details from the jwt token : ",e);
         }
