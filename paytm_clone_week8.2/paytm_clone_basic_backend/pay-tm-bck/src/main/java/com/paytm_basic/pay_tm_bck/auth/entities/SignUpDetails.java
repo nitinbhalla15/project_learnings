@@ -4,6 +4,9 @@ package com.paytm_basic.pay_tm_bck.auth.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.paytm_basic.pay_tm_bck.accounts.entity.BankDetails;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,9 +28,16 @@ public class SignUpDetails implements  UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID user_id;
+    @NotEmpty
+    @NotNull
     private String firstName;
+    @NotEmpty
+    @NotNull
     private String lastName;
+    @Email
     private String emailId;
+    @NotNull
+    @NotEmpty
     private String password;
     @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "bnkId",referencedColumnName = "bnk_id")

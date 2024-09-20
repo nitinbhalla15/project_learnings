@@ -47,7 +47,7 @@ public class AuthenticationService {
             log.info("Creating bank account ...");
             BankDetails bnkDetails = BankDetails.builder().bnk_id(UUID.randomUUID())
                     .email(newUser.getEmailId())
-                    .balance((long) Math.random()*10000)
+                    .balance((long) (Math.random() * 10000))
                     .lastTransactionDateTime(new Date()).build();
             newUser.setBnkDetails(bnkDetails);
             userRepo.save(newUser);
