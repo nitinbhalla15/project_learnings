@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.UUID;
@@ -15,5 +16,8 @@ public interface UserRepository extends JpaRepository<SignUpDetails, UUID> {
 
     @Query(nativeQuery = true,value = "Select * from user_info where email_id = :userEmail")
     Optional<SignUpDetails> findUserBySubject(String userEmail);
+
+    @Query(nativeQuery = true , value = "Select * from user_info where first_name = :keyword or last_name = :keyword")
+    List<SignUpDetails> findUsersWithName(String keyword);
 
 }

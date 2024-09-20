@@ -1,5 +1,7 @@
 package com.paytm_basic.pay_tm_bck.auth.exceptionHandler;
 
+import com.paytm_basic.pay_tm_bck.accounts.exceptions.CustomException;
+import com.paytm_basic.pay_tm_bck.accounts.service.UserService;
 import com.paytm_basic.pay_tm_bck.auth.entities.ErrorResonse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -37,5 +39,11 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             errors.put(err.getField(), err.getDefaultMessage());
         });
         return new ResponseEntity<>(errors,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<?> handleUserNotFound(CustomException exception){
+        ErrorResonse err = ErrorResonse.builder().errorMessage(exception.getErrorMessage()).http_status_code(404).build();
+        return new ResponseEntity<>(err,HttpStatus.NOT_FOUND);
     }
 }

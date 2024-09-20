@@ -1,4 +1,4 @@
-package com.paytm_basic.pay_tm_bck.auth.entities;
+package com.paytm_basic.pay_tm_bck.accounts.entity;
 
 
 import lombok.AllArgsConstructor;
