@@ -1,6 +1,8 @@
 package com.paytm_basic.pay_tm_bck.auth.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.paytm_basic.pay_tm_bck.accounts.entity.BankDetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +28,11 @@ public class SignUpDetails implements  UserDetails {
     private String firstName;
     private String lastName;
     private String emailId;
+    @JsonIgnore
     private String password;
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "bnkId",referencedColumnName = "bnk_id")
+    private BankDetails bnkDetails;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

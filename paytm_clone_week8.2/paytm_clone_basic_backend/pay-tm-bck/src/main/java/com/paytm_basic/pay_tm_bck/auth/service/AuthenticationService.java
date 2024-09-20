@@ -1,6 +1,7 @@
 package com.paytm_basic.pay_tm_bck.auth.service;
 
 
+import com.paytm_basic.pay_tm_bck.accounts.entity.BankDetails;
 import com.paytm_basic.pay_tm_bck.auth.entities.SignInDetails;
 import com.paytm_basic.pay_tm_bck.auth.entities.SignUpDetails;
 import com.paytm_basic.pay_tm_bck.auth.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -35,6 +37,11 @@ public class AuthenticationService {
                 .firstName(userDetails.getFirstName())
                 .lastName(userDetails.getLastName())
                 .password(passEncoder.encode(userDetails.getPassword())).build();
+        BankDetails bnkDetails = BankDetails.builder().bnk_id(UUID.randomUUID())
+                .email(newUser.getEmailId())
+                        .balance((long) Math.random())
+                                .lastTransactionDateTime(new Date()).build();
+        newUser.setBnkDetails(bnkDetails);
         // Need to add bank Account logic on sign up
         userRepo.save(newUser);
         String jwtToken = jwtService.generateToken(userDetails.getEmailId());
