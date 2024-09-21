@@ -7,7 +7,7 @@ export default function SignInPage(){
     return <LaunchCard>
         <Heading headingTitle="Sign In"></Heading>
         <InputBox title="Email"></InputBox>
-        <InputBox title="Password"></InputBox>
+        <InputBox title="Password" boxtype={"password"}></InputBox>
         <CustomButton btnName="Log In"></CustomButton>
     </LaunchCard>
 }
