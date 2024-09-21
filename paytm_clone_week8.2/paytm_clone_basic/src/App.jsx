@@ -1,13 +1,18 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import DashboardPage from './custom-pages/DashboardPage'
+import SignInPage from './custom-pages/SignInPage'
+import SignUpPage from './custom-pages/SignUpPage'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 function App() {
   return (
-    <div>
-        Hi there  from nitin
-    </div>
+    <BrowserRouter>
+    <Routes>
+      <Route path='/sign-up' element={<SignUpPage></SignUpPage>}></Route>
+      <Route path='/sign-in' element={<SignInPage></SignInPage>}></Route>
+      <Route path='/dashboard' element={<DashboardPage></DashboardPage>}></Route>
+     </Routes>
+    </BrowserRouter>
   )
 }
 
