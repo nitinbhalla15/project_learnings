@@ -11,7 +11,7 @@ export const currentBalanceSelector = selector({
             }
         })
         const finalRes = await res.json();
-        const userDetails = {userBalance:finalRes.response.balance,userName:finalRes.response.userName};
+        const userDetails = {userBalance:finalRes.response.balance,userName:finalRes.response.userName,userEmail:finalRes.response.loggedInEmail};
         return userDetails;
     }
 })

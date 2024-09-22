@@ -1,4 +1,10 @@
-export default function UserList({ user }) {
+import { useNavigate } from "react-router-dom"
+import { useSetRecoilState } from "recoil";
+import { toMoneyAtom } from "../recoil-state-store/transferMoney";
+
+export default function UserList({ user , loggedInUser}) {
+    const navigate = useNavigate();
+    const setToEmailId = useSetRecoilState(toMoneyAtom);
     return <div className="m-2 mx-10 p-4 flex justify-between bg-black rounded-2xl">
         <div className="flex w-1/4 gap-4">
             <div className="bg-white text-black rounded-full font-bold text-2xl p-3">
@@ -9,7 +15,10 @@ export default function UserList({ user }) {
             </div>
         </div>
         <div className="bg-white text-black p-3 rounded-2xl cursor-pointer flex justify-center">
-            <button>Send Money</button>
+            <button onClick={()=>{
+                setToEmailId(user.emailId);
+                navigate("/transferMoney")
+            }}>Send Money</button>
         </div>
     </div>
 }

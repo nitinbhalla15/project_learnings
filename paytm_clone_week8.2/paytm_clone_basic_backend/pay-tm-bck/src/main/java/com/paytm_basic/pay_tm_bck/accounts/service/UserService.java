@@ -62,6 +62,7 @@ public class UserService {
                 accBalance=userDetails.getBnkDetails().getBalance();
                 responseMap.put("balance",accBalance.toString());
                 responseMap.put("userName",userDetails.getFirstName()+" "+userDetails.getLastName());
+                responseMap.put("loggedInEmail",userDetails.getEmailId());
             }else{
                 throw new CustomException("User not found", HttpStatus.NOT_FOUND);
             }

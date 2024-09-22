@@ -20,7 +20,7 @@ export default function DashboardPage(){
         {useList!=undefined && useList.map(element => {
             const userShowDetails = {initial:element.friendName,userName:element.friendName,emailId:element.emailId};
             console.log("User detail Element : ",userShowDetails)
-            return <UserList user={userShowDetails}></UserList>
+            return <UserList user={userShowDetails} loggedInUser={curBalance.contents.userEmail}></UserList>
         })}
     </div>
 } 
