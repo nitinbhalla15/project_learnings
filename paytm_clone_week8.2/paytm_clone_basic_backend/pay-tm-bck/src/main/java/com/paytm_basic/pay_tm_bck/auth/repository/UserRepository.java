@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<SignUpDetails, UUID> {
     @Query(nativeQuery = true,value = "Select * from user_info where email_id = :userEmail")
     Optional<SignUpDetails> findUserBySubject(String userEmail);
 
-    @Query(nativeQuery = true , value = "Select * from user_info where first_name = :keyword or last_name = :keyword")
+    @Query(nativeQuery = true , value = "Select * from user_info where first_name LIKE %:keyword% or last_name LIKE %:keyword%")
     List<SignUpDetails> findUsersWithName(String keyword);
 
 }

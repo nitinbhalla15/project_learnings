@@ -15,9 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -56,15 +54,18 @@ public class UserService {
     }
 
 
-    public Long fetchBalanceDetails(UUID userId){
-        Long accBalance = (long) -1;
+    public Map<String,String> fetchBalanceDetails(UUID userId){
+        Map<String,String> responseMap = new HashMap<>();
+        Long accBalance ;
             SignUpDetails userDetails = usrRepo.findById(userId).get();
             if(userDetails!=null){
                 accBalance=userDetails.getBnkDetails().getBalance();
+                responseMap.put("balance",accBalance.toString());
+                responseMap.put("userName",userDetails.getFirstName()+" "+userDetails.getLastName());
             }else{
                 throw new CustomException("User not found", HttpStatus.NOT_FOUND);
             }
-        return accBalance;
+        return responseMap;
     }
 
     public List<FriendsPojo> serachUsers(String keyword){

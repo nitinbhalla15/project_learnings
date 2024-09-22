@@ -69,6 +69,7 @@ public class AuthenticationService {
         SignUpDetails userDetails = userRepo.findUserBySubject(loginDetails.getEmail()).orElse(null);
         String jwtToken = jwtService.generateToken(userDetails.getEmailId());
         response.put("token",jwtToken);
+        response.put("user_id",userDetails.getUser_id().toString());
         return response;
     }
 

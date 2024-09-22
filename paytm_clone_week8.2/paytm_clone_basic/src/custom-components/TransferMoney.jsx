@@ -1,6 +1,6 @@
 import CustomButton from "./CustomButton";
-import Heading from "./Heading";
-import InputBox from "./InputBox";
+import {Heading} from "./Heading";
+import {InputBox} from "./InputBox";
 import LaunchCard from "./LaunchCard";
 
 export default function TransferMoney(){
