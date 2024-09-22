@@ -1,6 +1,6 @@
 export default function InputBox({title,boxtype}){
     return <div className="m-2 p-4 flex flex-col">
-        <div className="mt-4 text-xl">
+        <div className="mt-4 text-xl font-bold">
             {title}
         </div>
         <div className="mt-4 text-black">
