@@ -29,5 +29,11 @@ export default function SignInPage(){
                 navigate("/dashboard")
             })
         }} btnName="Log In"></CustomButton>
+        <div className="flex justify-center my-3">
+            <div>Haven't registered yet ? Go To </div>
+            <button className="bg-white text-black rounded-xl px-4 mx-3" onClick={()=>{
+                navigate("/sign-up")
+            }}>Sign-Up Page</button>
+        </div>
     </LaunchCard>
 }
