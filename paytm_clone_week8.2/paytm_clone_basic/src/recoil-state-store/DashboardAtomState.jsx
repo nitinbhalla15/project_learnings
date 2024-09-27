@@ -1,5 +1,10 @@
 import { atom, selector } from "recoil";
 
+export const currentBalanceAtom = atom({
+    key:"currentBalanceAtom",
+    default:undefined
+})
+
 export const currentBalanceSelector = selector({
     key:"currentBalanceSelector",
     get:async ({get})=>{
@@ -11,12 +16,22 @@ export const currentBalanceSelector = selector({
             }
         })
         const finalRes = await res.json();
-        const userDetails = {userBalance:finalRes.response.balance,userName:finalRes.response.userName,userEmail:finalRes.response.loggedInEmail};
+        let userDetails = {userBalance:finalRes.response.balance,userName:finalRes.response.userName,userEmail:finalRes.response.loggedInEmail};
+        const balance = get(currentBalanceAtom);
+        if(balance!=undefined){
+            userDetails.userBalance=balance;
+        }
+        
         return userDetails;
     }
 })
 
 export const userList = atom({
     key:"userListAtom",
+    default:undefined
+})
+
+export const userNotFoundAtom = atom({
+    key:"userNotFoundAtom",
     default:undefined
 })

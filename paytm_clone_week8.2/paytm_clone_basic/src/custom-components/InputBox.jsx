@@ -1,7 +1,7 @@
 import { useRecoilValue, useSetRecoilState } from "recoil"
 import {  userEmailId, userFirstName, userLastName, userPassword } from "../recoil-state-store/SignUpStateAtoms"
 import React from "react";
-import { userList } from "../recoil-state-store/DashboardAtomState";
+import { userList, userNotFoundAtom } from "../recoil-state-store/DashboardAtomState";
 import { sendAmount, toMoneyAtom } from "../recoil-state-store/transferMoney";
 
 export const InputBox = React.memo(({title,boxtype,inpValue,dis})=>{
@@ -12,6 +12,7 @@ export const InputBox = React.memo(({title,boxtype,inpValue,dis})=>{
     const setUserList = useSetRecoilState(userList);
     const setToContact = useSetRecoilState(toMoneyAtom);
     const setAmount = useSetRecoilState(sendAmount);
+    const setUserNotFound =  useSetRecoilState(userNotFoundAtom);
     let clock;
     console.log("Input box renders")
     return <div className="m-2 p-4 flex flex-col">
@@ -41,12 +42,18 @@ export const InputBox = React.memo(({title,boxtype,inpValue,dis})=>{
                         })
                         .then(async(res)=>{
                             const resposne = await res.json();
-                            setUserList(resposne.response);
+                            if(resposne.response.length>0){
+                                setUserList(resposne.response);
+                                setUserNotFound(undefined)
+                            }else{
+                                setUserNotFound("No user Found :(")
+                                setUserList(undefined)
+                            }
                         })
                     },300):setUserList([])}
                 }else if(title=="To"){
                     setToContact(e.target.value);
-                }else if(title=="Amount"){
+                }else if(title=="Amount To Transfer"){
                     setAmount(e.target.value);
                 }
             }} className="rounded-xl w-full p-4" type={`${boxtype}`} value={inpValue} disabled={dis} placeholder={`Enter your ${title}`}></input>
