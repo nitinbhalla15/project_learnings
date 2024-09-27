@@ -28,7 +28,9 @@ export default function SignInPage(){
                 localStorage.setItem("logged_in_user",response.response.user_id);
                 navigate("/dashboard")
             })
-        }} btnName="Log In"></CustomButton>
+        }} btnName="Log In" isDisable={(userDetails.emailId==undefined || userDetails.password==undefined || userDetails.emailId.trim()==""
+            || userDetails.password.trim()==""
+        )?true:false}></CustomButton>
         <div className="flex justify-center my-3">
             <div>Haven't registered yet ? Go To </div>
             <button className="bg-white text-black rounded-xl px-4 mx-3" onClick={()=>{

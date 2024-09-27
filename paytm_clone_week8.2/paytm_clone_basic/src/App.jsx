@@ -5,6 +5,7 @@ import SignInPage from './custom-pages/SignInPage'
 import SignUpPage from './custom-pages/SignUpPage'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ProtectedRoutes from './utils/ProtectedRoutes'
+import RouteNotFound from './custom-pages/RouteNotFound'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path='/dashboard' element={<DashboardPage></DashboardPage>}></Route>
           <Route path='/transferMoney' element={<TransferMoney></TransferMoney>} ></Route>
         </Route>
+        <Route path="*" element={<RouteNotFound></RouteNotFound>}></Route>
       </Routes>
     </BrowserRouter>
   )

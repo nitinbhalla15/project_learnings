@@ -30,7 +30,9 @@ export default function SignUpPage() {
                 localStorage.setItem("token",jwtToken);
                 navigate("/dashboard")
             })
-        }} btnName="Sign Up"></CustomButton>
+        }} btnName="Sign Up" isDisable={(signUpPayload.emailId==undefined || signUpPayload.password==undefined || signUpPayload.firstName==undefined || signUpPayload.lastName==undefined ||signUpPayload.emailId.trim()==""
+            || signUpPayload.password.trim()=="" || signUpPayload.firstName.trim()=="" || signUpPayload.lastName.trim()==""
+        )?true:false}></CustomButton>
         <div className="flex justify-center my-3">
             <div>Already a User ? Go To </div>
             <button className="bg-white text-black rounded-xl px-4 mx-3" onClick={()=>{
