@@ -4,6 +4,7 @@ import {InputBox} from "../custom-components/InputBox";
 import TopBar from "../custom-components/TopBar";
 import UserList from "../custom-components/UserListComp";
 import { currentBalanceSelector, userList } from "../recoil-state-store/DashboardAtomState";
+import SearchBox from "../custom-components/SearchBox";
 
 export default function DashboardPage(){
     const curBalance = useRecoilValueLoadable(currentBalanceSelector);
@@ -17,10 +18,13 @@ export default function DashboardPage(){
         <TopBar username={curBalance.contents.userName}></TopBar>
         <BalanceComponent currentBalance={curBalance.contents.userBalance}></BalanceComponent>
         <InputBox title={"Search Friends -> Transfer Money"}></InputBox>
-        {useList!=undefined && useList.map(element => {
+        {/* <UserList searchedUsers = {useList}></UserList> */}
+        <SearchBox>  {useList!=undefined && useList.map(element => {
             const userShowDetails = {initial:element.friendName,userName:element.friendName,emailId:element.emailId};
             console.log("User detail Element : ",userShowDetails)
             return <UserList user={userShowDetails} loggedInUser={curBalance.contents.userEmail}></UserList>
         })}
+        </SearchBox>
+      
     </div>
 } 

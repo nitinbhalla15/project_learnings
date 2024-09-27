@@ -30,6 +30,7 @@ export const InputBox = React.memo(({title,boxtype,inpValue,dis})=>{
                     setPassword(e.target.value);
                 }else if(title=="Search Friends -> Transfer Money"){
                     clearTimeout(clock);
+                    {e.target.value.trim()!=""?
                     clock = setTimeout(()=>{
                         fetch(`http://localhost:8080/api/v1/searchUsers/${e.target.value}`,{
                             method:"GET",
@@ -42,7 +43,7 @@ export const InputBox = React.memo(({title,boxtype,inpValue,dis})=>{
                             const resposne = await res.json();
                             setUserList(resposne.response);
                         })
-                    },300)
+                    },300):setUserList([])}
                 }else if(title=="To"){
                     setToContact(e.target.value);
                 }else if(title=="Amount"){
