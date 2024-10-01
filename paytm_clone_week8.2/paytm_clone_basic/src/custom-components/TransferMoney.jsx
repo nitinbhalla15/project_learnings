@@ -21,7 +21,7 @@ export default function TransferMoney(){
             <InputBox title={"From"} inpValue={userDetails.userName} dis={true}></InputBox>
             <InputBox title={"To"} inpValue={toUser} dis={true}></InputBox>
             <InputBox title={"Available Balance"} inpValue={currentBalance.userBalance} dis={true}></InputBox>
-            <InputBox title={"Amount To Transfer"} boxtype={"number"}></InputBox>
+            <InputBox title={"Amount To Transfer"} boxtype={"number"} minimum={"1"}></InputBox>
             <CustomButton clickFunction={()=>{
                 fetch(`http://localhost:8080/api/v1/transferMoney/${userDetails.userEmail}/${toUser}/${amount}`,
                     {method:"POST",

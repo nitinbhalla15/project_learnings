@@ -4,7 +4,7 @@ import React from "react";
 import { userList, userNotFoundAtom } from "../recoil-state-store/DashboardAtomState";
 import { sendAmount, toMoneyAtom } from "../recoil-state-store/transferMoney";
 
-export const InputBox = React.memo(({title,boxtype,inpValue,dis})=>{
+export const InputBox = React.memo(({title,boxtype,inpValue,dis,minimum})=>{
     const setFirstName = useSetRecoilState(userFirstName);
     const setLastName = useSetRecoilState(userLastName);
     const setEmailId = useSetRecoilState(userEmailId);
@@ -50,13 +50,13 @@ export const InputBox = React.memo(({title,boxtype,inpValue,dis})=>{
                                 setUserList(undefined)
                             }
                         })
-                    },300):setUserList([])}
+                    },300):setUserList(undefined);setUserNotFound(undefined);}
                 }else if(title=="To"){
                     setToContact(e.target.value);
                 }else if(title=="Amount To Transfer"){
                     setAmount(e.target.value);
                 }
-            }} className="rounded-xl w-full p-4" type={`${boxtype}`} value={inpValue} disabled={dis} placeholder={`Enter your ${title}`}></input>
+            }} className="rounded-xl w-full p-4" type={`${boxtype}`} value={inpValue} disabled={dis} placeholder={`Enter your ${title}`} min={minimum}></input>
         </div>
     </div>
 })

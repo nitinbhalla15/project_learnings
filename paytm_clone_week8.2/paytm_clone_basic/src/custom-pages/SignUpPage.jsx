@@ -1,13 +1,19 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import CustomButton from "../custom-components/CustomButton";
 import {Heading} from "../custom-components/Heading";
 import {InputBox} from "../custom-components/InputBox";
 import LaunchCard from "../custom-components/LaunchCard";
-import { userDetailsSelector } from "../recoil-state-store/SignUpStateAtoms";
+import { userDetailsSelector, userEmailId, userFirstName, userLastName, userPassword } from "../recoil-state-store/SignUpStateAtoms";
 import {useNavigate} from "react-router-dom"
+import { ErrorAtom } from "../recoil-state-store/ErrorAtom";
 
 export default function SignUpPage() {
     const signUpPayload = useRecoilValue(userDetailsSelector);
+    const setErrorResponse = useSetRecoilState(ErrorAtom);
+    const setFirstName = useSetRecoilState(userFirstName);
+    const setLastName = useSetRecoilState(userLastName);
+    const setEmailId = useSetRecoilState(userEmailId);
+    const setPassword = useSetRecoilState(userPassword);
     console.log("Sign up page renders")
     const navigate = useNavigate();
     return <LaunchCard>
@@ -26,9 +32,19 @@ export default function SignUpPage() {
                 })
             .then(async (res)=>{
                 const response = await res.json();
-                const jwtToken=response.response.token;
-                localStorage.setItem("token",jwtToken);
-                navigate("/dashboard")
+                if (response.status != "error") {
+                    localStorage.clear();
+                    localStorage.setItem("token", response.response.token);
+                    navigate("/dashboard")
+                }else{
+                    const errors = response.data;
+                    console.log(":Errrrr")
+                    setErrorResponse(errors);
+                    setTimeout(() => {
+                        setErrorResponse(undefined)
+                    }, 3000);
+                }   
+                
             })
         }} btnName="Sign Up" isDisable={(signUpPayload.emailId==undefined || signUpPayload.password==undefined || signUpPayload.firstName==undefined || signUpPayload.lastName==undefined ||signUpPayload.emailId.trim()==""
             || signUpPayload.password.trim()=="" || signUpPayload.firstName.trim()=="" || signUpPayload.lastName.trim()==""
@@ -36,6 +52,10 @@ export default function SignUpPage() {
         <div className="flex justify-center my-3">
             <div>Already a User ? Go To </div>
             <button className="bg-white text-black rounded-xl px-4 mx-3" onClick={()=>{
+                setFirstName(undefined);
+                setLastName(undefined);
+                setEmailId(undefined);
+                setPassword(undefined);
                 navigate("/sign-in")
             }}>Sign-In Page</button>
         </div>
