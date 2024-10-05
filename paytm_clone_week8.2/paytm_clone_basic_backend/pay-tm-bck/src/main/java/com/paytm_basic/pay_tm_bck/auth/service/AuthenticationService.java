@@ -2,8 +2,10 @@ package com.paytm_basic.pay_tm_bck.auth.service;
 
 
 import com.paytm_basic.pay_tm_bck.accounts.entity.BankDetails;
+import com.paytm_basic.pay_tm_bck.auth.entities.BckResponse;
 import com.paytm_basic.pay_tm_bck.auth.entities.SignInDetails;
 import com.paytm_basic.pay_tm_bck.auth.entities.SignUpDetails;
+import com.paytm_basic.pay_tm_bck.auth.exceptionHandler.UserAlreadyExistException;
 import com.paytm_basic.pay_tm_bck.auth.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +36,12 @@ public class AuthenticationService {
     private AuthenticationManager authenticationManager;
 
 
-    public Map<String,String> createAccount(SignUpDetails userDetails){
-        Map<String,String> signupResponse = new HashMap<>();
-        try{
-            log.info("Creating user account ...");
+    public BckResponse createAccount(SignUpDetails userDetails) throws UserAlreadyExistException {
+        BckResponse resDataBck = new BckResponse();
+        Map<String,Object> resData = new HashMap<>();
+        log.info("Creating user account ...");
+        SignUpDetails existingUser = userRepo.findUserBySubject(userDetails.getEmailId()).orElse(null);
+        if(existingUser==null) {
             SignUpDetails newUser = SignUpDetails.builder()
                     .user_id(UUID.randomUUID())
                     .emailId(userDetails.getEmailId())
@@ -52,25 +56,33 @@ public class AuthenticationService {
             newUser.setBnkDetails(bnkDetails);
             userRepo.save(newUser);
             String jwtToken = jwtService.generateToken(userDetails.getEmailId());
-            signupResponse.put("token",jwtToken);
+            resDataBck.setHttp_status_code(200);
+            resData.put("token",jwtToken);
+            resData.put("userBalance",bnkDetails.getBalance());
+            resData.put("userEmail",userDetails.getEmailId());
+            resData.put("userName",userDetails.getFirstName()+" "+userDetails.getLastName());
+            resDataBck.setResponse(resData);
             log.info("User created successfully");
-            return signupResponse;
-        }catch (Exception e){
-            log.error("Error while creating user account...");
+            return resDataBck;
         }
-        return signupResponse;
+        throw new UserAlreadyExistException("User with same email already exist");
     }
 
-    public Map<String,String> loginUser(SignInDetails loginDetails){
-        Map<String,String> response = new HashMap<>();
+    public BckResponse loginUser(SignInDetails loginDetails){
+        BckResponse resDataBck = new BckResponse();
+        Map<String,Object> resData = new HashMap<>();
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDetails.getEmail(),loginDetails.getPassword())
         );
         SignUpDetails userDetails = userRepo.findUserBySubject(loginDetails.getEmail()).orElse(null);
         String jwtToken = jwtService.generateToken(userDetails.getEmailId());
-        response.put("token",jwtToken);
-        response.put("user_id",userDetails.getUser_id().toString());
-        return response;
+        resDataBck.setHttp_status_code(200);
+        resData.put("token",jwtToken);
+        resData.put("userBalance",userDetails.getBnkDetails().getBalance());
+        resData.put("userEmail",userDetails.getEmailId());
+        resData.put("userName",userDetails.getFirstName()+" "+userDetails.getLastName());
+        resDataBck.setResponse(resData);
+        return resDataBck;
     }
 
 

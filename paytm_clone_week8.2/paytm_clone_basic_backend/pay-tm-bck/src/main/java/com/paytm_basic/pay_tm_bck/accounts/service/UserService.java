@@ -5,7 +5,9 @@ import com.paytm_basic.pay_tm_bck.accounts.entity.BankDetails;
 import com.paytm_basic.pay_tm_bck.accounts.entity.FriendsPojo;
 import com.paytm_basic.pay_tm_bck.accounts.entity.UpdatedUserDetails;
 import com.paytm_basic.pay_tm_bck.accounts.exceptions.CustomException;
+import com.paytm_basic.pay_tm_bck.auth.entities.BckResponse;
 import com.paytm_basic.pay_tm_bck.auth.entities.SignUpDetails;
+import com.paytm_basic.pay_tm_bck.auth.repository.BankRepository;
 import com.paytm_basic.pay_tm_bck.auth.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,9 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder encoder;
+
+    @Autowired
+    private BankRepository bnkRepo;
 
     public String updateUserDetails(UUID user_id,UpdatedUserDetails usrDetails){
         String response ;
@@ -54,36 +59,38 @@ public class UserService {
     }
 
 
-    public Map<String,String> fetchBalanceDetails(UUID userId){
-        Map<String,String> responseMap = new HashMap<>();
-        Long accBalance ;
-            SignUpDetails userDetails = usrRepo.findById(userId).get();
-            if(userDetails!=null){
-                accBalance=userDetails.getBnkDetails().getBalance();
-                responseMap.put("balance",accBalance.toString());
-                responseMap.put("userName",userDetails.getFirstName()+" "+userDetails.getLastName());
-                responseMap.put("loggedInEmail",userDetails.getEmailId());
-            }else{
-                throw new CustomException("User not found", HttpStatus.NOT_FOUND);
-            }
-        return responseMap;
+    public BckResponse fetchBalanceDetails(String user_email){
+        BckResponse bckResponseData = new BckResponse();
+        Map<String,Object> resData = new HashMap<>();
+        Long accBalance = bnkRepo.findBankDetailsByEmailId(user_email);
+        bckResponseData.setHttp_status_code(200);
+        resData.put("accBalance",accBalance);
+        bckResponseData.setResponse(resData);
+        return bckResponseData;
     }
 
-    public List<FriendsPojo> serachUsers(String keyword){
+    public BckResponse serachUsers(String keyword){
+        BckResponse bckResponse = new BckResponse();
+        Map<String,Object> resData = new HashMap<>();
         List<FriendsPojo> allUserList = new ArrayList<>();
         try{
             List<SignUpDetails> userList = usrRepo.findUsersWithName(keyword);
             userList.forEach((item)->{
                 allUserList.add(new FriendsPojo(item.getEmailId(),item.getFirstName()+" "+item.getLastName()));
             });
+            bckResponse.setHttp_status_code(200);
+            resData.put("userList",allUserList);
+            bckResponse.setResponse(resData);
         }catch (Exception e){
             log.error("Error while fetching the users");
         }
-        return allUserList;
+        return bckResponse;
     }
 
     @Transactional
-    public String transfeMoney(String fromEmail,String toEmail,Long amount){
+    public BckResponse transfeMoney(String fromEmail,String toEmail,Long amount){
+        BckResponse bckResponse = new BckResponse();
+        Map<String,Object> resData = new HashMap<>();
         SignUpDetails fromUser = usrRepo.findUserBySubject(fromEmail).orElse(null);
         SignUpDetails toUser = usrRepo.findUserBySubject(toEmail).orElse(null);
         if(fromUser!=null && toUser!=null){
@@ -96,13 +103,17 @@ public class UserService {
                 toUser.setBnkDetails(toBankDetails);
                 usrRepo.save(fromUser);
                 usrRepo.save(toUser);
+                resData.put("message","Money Transfered !");
+                resData.put("avl_balance",fromBankDetails.getBalance().toString());
+                bckResponse.setHttp_status_code(200);
+                bckResponse.setResponse(resData);
             }else{
                 throw new CustomException("Not Enough Balance :(",HttpStatus.OK);
             }
         }else{
             throw new CustomException("User Does not exist",HttpStatus.NOT_FOUND);
         }
-        return "Money Transfered !";
+        return bckResponse;
     }
 
 

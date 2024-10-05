@@ -2,6 +2,7 @@ package com.paytm_basic.pay_tm_bck.auth.exceptionHandler;
 
 import com.paytm_basic.pay_tm_bck.accounts.exceptions.CustomException;
 import com.paytm_basic.pay_tm_bck.accounts.service.UserService;
+import com.paytm_basic.pay_tm_bck.auth.entities.BckResponse;
 import com.paytm_basic.pay_tm_bck.auth.entities.ErrorResonse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -18,32 +19,62 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.HandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
-@Slf4j
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<?> handleAuthException(AuthenticationException exception){
-        ErrorResonse errResponse = ErrorResonse.builder().errorMessage(exception.getMessage()).http_status_code(403).build();
+            List<String> errList = new ArrayList<>();
+            errList.add(exception.getMessage());
+            Map<String,Object> errData = new HashMap<>();
+            errData.put("errList",errList);
+            BckResponse errResponse = BckResponse.builder().http_status_code(403).
+            response(errData)
+            .build();
         return new ResponseEntity<>(errResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(UserAlreadyExistException.class)
+    public ResponseEntity<?> handleAlreadyExistingUser(UserAlreadyExistException exception){
+        List<String> errList = new ArrayList<>();
+        errList.add(exception.getMessage());
+        Map<String,Object> errData = new HashMap<>();
+        errData.put("errList",errData);
+        BckResponse errResponse = BckResponse.builder().http_status_code(208).response(errData).build();
+        return new ResponseEntity<>(errResponse,HttpStatus.ALREADY_REPORTED);
     }
 
     @Override
     public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request){
-        Map<String,String> errors = new HashMap<>();
+        BckResponse errResponse = new BckResponse();
+        List<String> errList = new ArrayList<>();
+        Map<String,Object> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach((err)->{
-            errors.put(err.getField(), err.getDefaultMessage());
+            errList.add(err.getField()+" --> "+err.getDefaultMessage());
         });
-        return new ResponseEntity<>(errors,HttpStatus.BAD_REQUEST);
+        errors.put("errList",errList);
+        errResponse.setHttp_status_code(400);
+        errResponse.setResponse(errors);
+        return new ResponseEntity<>(errResponse,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<?> handleUserNotFound(CustomException exception){
-        ErrorResonse err = ErrorResonse.builder().errorMessage(exception.getErrorMessage()).http_status_code(404).build();
-        return new ResponseEntity<>(err,HttpStatus.NOT_FOUND);
+        BckResponse errResponse = new BckResponse();
+        List<String> errList = new ArrayList<>();
+        Map<String,Object> errData = new HashMap<>();
+        errList.add(exception.getMessage());
+        errData.put("errList",errList);
+        errResponse.setHttp_status_code(400);
+        errResponse.setResponse(errData);
+        return new ResponseEntity<>(errResponse,HttpStatus.NOT_FOUND);
     }
+
+
 }
