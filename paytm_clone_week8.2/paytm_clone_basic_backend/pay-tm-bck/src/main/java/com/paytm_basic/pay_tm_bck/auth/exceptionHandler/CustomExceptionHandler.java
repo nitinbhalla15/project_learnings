@@ -45,7 +45,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         List<String> errList = new ArrayList<>();
         errList.add(exception.getMessage());
         Map<String,Object> errData = new HashMap<>();
-        errData.put("errList",errData);
+        errData.put("errList",errList);
         BckResponse errResponse = BckResponse.builder().http_status_code(208).response(errData).build();
         return new ResponseEntity<>(errResponse,HttpStatus.ALREADY_REPORTED);
     }

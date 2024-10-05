@@ -3,6 +3,7 @@ package com.paytm_basic.pay_tm_bck.accounts.controller;
 import com.paytm_basic.pay_tm_bck.accounts.entity.UpdatedUserDetails;
 import com.paytm_basic.pay_tm_bck.accounts.service.UserService;
 import com.paytm_basic.pay_tm_bck.auth.entities.BckResponse;
+import com.paytm_basic.pay_tm_bck.auth.exceptionHandler.UserAlreadyExistException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class UserController {
 
     @PostMapping(value = "/transferMoney/{from}/{to}/{amount}")
     public ResponseEntity<?> transferMoney(@PathVariable("from") String fromEmailId , @PathVariable("to") String toEmailId,
-                                           @PathVariable("amount") Long amount){
+                                           @PathVariable("amount") Long amount) throws UserAlreadyExistException {
         return new ResponseEntity<>(usrSevice.transfeMoney(fromEmailId,toEmailId,amount),HttpStatus.OK);
     }
 

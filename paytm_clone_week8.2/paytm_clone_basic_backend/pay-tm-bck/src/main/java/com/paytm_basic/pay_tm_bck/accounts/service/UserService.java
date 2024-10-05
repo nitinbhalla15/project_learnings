@@ -7,6 +7,7 @@ import com.paytm_basic.pay_tm_bck.accounts.entity.UpdatedUserDetails;
 import com.paytm_basic.pay_tm_bck.accounts.exceptions.CustomException;
 import com.paytm_basic.pay_tm_bck.auth.entities.BckResponse;
 import com.paytm_basic.pay_tm_bck.auth.entities.SignUpDetails;
+import com.paytm_basic.pay_tm_bck.auth.exceptionHandler.UserAlreadyExistException;
 import com.paytm_basic.pay_tm_bck.auth.repository.BankRepository;
 import com.paytm_basic.pay_tm_bck.auth.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -88,7 +89,7 @@ public class UserService {
     }
 
     @Transactional
-    public BckResponse transfeMoney(String fromEmail,String toEmail,Long amount){
+    public BckResponse transfeMoney(String fromEmail,String toEmail,Long amount) throws UserAlreadyExistException {
         BckResponse bckResponse = new BckResponse();
         Map<String,Object> resData = new HashMap<>();
         SignUpDetails fromUser = usrRepo.findUserBySubject(fromEmail).orElse(null);
@@ -108,7 +109,7 @@ public class UserService {
                 bckResponse.setHttp_status_code(200);
                 bckResponse.setResponse(resData);
             }else{
-                throw new CustomException("Not Enough Balance :(",HttpStatus.OK);
+                throw new UserAlreadyExistException("Not Enough Balance :(");
             }
         }else{
             throw new CustomException("User Does not exist",HttpStatus.NOT_FOUND);

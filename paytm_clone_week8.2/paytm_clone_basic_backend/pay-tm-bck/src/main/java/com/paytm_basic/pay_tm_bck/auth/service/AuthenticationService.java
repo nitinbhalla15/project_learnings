@@ -64,8 +64,9 @@ public class AuthenticationService {
             resDataBck.setResponse(resData);
             log.info("User created successfully");
             return resDataBck;
+        }else {
+            throw new UserAlreadyExistException("User with same email already exist");
         }
-        throw new UserAlreadyExistException("User with same email already exist");
     }
 
     public BckResponse loginUser(SignInDetails loginDetails){
