@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { useSetRecoilState } from "recoil";
 import { toMoneyAtom } from "../recoil-state-store/transferMoney";
 
-export default function UserList({user,loggedInUser}) {
+export default function UserList({user}) {
     const navigate = useNavigate();
     const setToEmailId = useSetRecoilState(toMoneyAtom);
     return  <div className="m-2 mx-10 p-4 flex justify-between bg-black rounded-2xl">

@@ -1,9 +1,8 @@
-export default function CustomButton({ btnName, clickFunction ,isDisable}) {
-    return <div className="">
-        <div className={`${isDisable?`cursor-not-allowed`:` cursor-pointer`} p-4 m-2 mt-20 rounded-2xl flex justify-center '
-        ${isDisable?`bg-red-600 text-white`:` bg-white text-black`}`}>
-            <button disabled={isDisable} className={`${isDisable?`cursor-not-allowed`:` cursor-pointer`}`} 
-            onClick={isDisable?null:clickFunction}>{btnName}</button>
+export default function CustomButton({ btnName, clickFunction, isDisable }) {
+    console.log("IS disable: ",isDisable)
+    return <div className="flex justify-center">
+        <div className={`${isDisable ? `cursor-not-allowed bg-red-600 text-white` : `cursor-pointer bg-white text-black`} p-4 w-1/2 mt-5 rounded-2xl flex justify-center`} disabled={isDisable} onClick={isDisable ? null : clickFunction}>
+            {btnName}
         </div>
     </div>
 }

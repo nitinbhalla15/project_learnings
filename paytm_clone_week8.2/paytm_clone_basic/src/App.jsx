@@ -7,12 +7,14 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ProtectedRoutes from './utils/ProtectedRoutes'
 import RouteNotFound from './custom-pages/RouteNotFound'
 import ErrorComponent from './custom-components/ErrorComponent'
+import LandingPage from './custom-pages/LandingPage'
 
 function App() {
   return (
     <ErrorComponent>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<LandingPage></LandingPage>}></Route>
           <Route path='/sign-up' element={<SignUpPage></SignUpPage>}></Route>
           <Route path='/sign-in' element={<SignInPage></SignInPage>}></Route>
           <Route path="/error" element={<ErrorComponent></ErrorComponent>}></Route>

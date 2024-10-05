@@ -1,37 +1,25 @@
 import { atom, selector } from "recoil";
 
-export const currentBalanceAtom = atom({
-    key:"currentBalanceAtom",
-    default:undefined
-})
-
-export const currentBalanceSelector = selector({
-    key:"currentBalanceSelector",
-    get:async ({get})=>{
-        const res = await fetch(`http://localhost:8080/api/v1/checkBalance/${localStorage.getItem("logged_in_user")}`,{
-            method:"GET",
-            headers:{
-                'Content-Type':"application.json",
-                'Authorization':`Bearer ${localStorage.getItem("token")}`
-            }
-        })
-        const finalRes = await res.json();
-        let userDetails = {userBalance:finalRes.response.balance,userName:finalRes.response.userName,userEmail:finalRes.response.loggedInEmail};
-        const balance = get(currentBalanceAtom);
-        if(balance!=undefined){
-            userDetails.userBalance=balance;
-        }
-        
-        return userDetails;
+export const userDetailsAtom = atom({
+    key:"userDetailsAtom",
+    default:{
+        currentBalance:undefined,
+        userName:undefined,
+        userEmail:undefined
     }
 })
 
 export const userList = atom({
-    key:"userListAtom",
+    key:"userList",
     default:undefined
 })
 
 export const userNotFoundAtom = atom({
     key:"userNotFoundAtom",
+    default:undefined
+})
+
+export const currentBalane = atom({
+    key:"currentBalance",
     default:undefined
 })

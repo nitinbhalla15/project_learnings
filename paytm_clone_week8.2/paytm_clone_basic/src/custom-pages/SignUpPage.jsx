@@ -6,6 +6,7 @@ import LaunchCard from "../custom-components/LaunchCard";
 import { userDetailsSelector, userEmailId, userFirstName, userLastName, userPassword } from "../recoil-state-store/SignUpStateAtoms";
 import {useNavigate} from "react-router-dom"
 import { ErrorAtom } from "../recoil-state-store/ErrorAtom";
+import { userDetailsAtom } from "../recoil-state-store/DashboardAtomState";
 
 export default function SignUpPage() {
     const signUpPayload = useRecoilValue(userDetailsSelector);
@@ -13,15 +14,23 @@ export default function SignUpPage() {
     const setFirstName = useSetRecoilState(userFirstName);
     const setLastName = useSetRecoilState(userLastName);
     const setEmailId = useSetRecoilState(userEmailId);
+    const setUserDetails = useSetRecoilState(userDetailsAtom);
     const setPassword = useSetRecoilState(userPassword);
-    console.log("Sign up page renders")
     const navigate = useNavigate();
     return <LaunchCard>
         <Heading headingTitle="Sign Up"></Heading>
-        <InputBox title="First Name"></InputBox>
-        <InputBox title="Last Name"></InputBox>
-        <InputBox title="Email"></InputBox>
-        <InputBox title="Password" boxtype={"password"}></InputBox>
+        <InputBox title="First Name" onChangeInput={(e)=>{
+            setFirstName(e.target.value);
+        }}></InputBox>
+        <InputBox title="Last Name" onChangeInput={(e)=>{
+            setLastName(e.target.value);
+        }}></InputBox>
+        <InputBox title="Email" onChangeInput={(e)=>{
+            setEmailId(e.target.value);
+        }}></InputBox>
+        <InputBox title="Password" boxtype={"password"} onChangeInput={(e)=>{
+            setPassword(e.target.value);
+        }}></InputBox>
         <CustomButton clickFunction={()=>{
             fetch('http://localhost:8080/auth/signup',
                 {method:"POST",
@@ -32,24 +41,30 @@ export default function SignUpPage() {
                 })
             .then(async (res)=>{
                 const response = await res.json();
-                if (response.status != "error") {
+                console.log("Response on sign up ",response)        
+                if(response.http_status_code==200){
                     localStorage.clear();
                     localStorage.setItem("token", response.response.token);
-                    navigate("/dashboard")
+                    localStorage.setItem("logged_in_user_email",response.response.userEmail);
+                    const usrDetails = {
+                        currentBalance:response.response.userBalance,
+                        userName:response.response.userName,
+                        userEmail:response.response.userEmail
+                    }
+                    setUserDetails(usrDetails);
+                    navigate("/dashboard");
                 }else{
-                    const errors = response.data;
-                    console.log(":Errrrr")
-                    setErrorResponse(errors);
-                    setTimeout(() => {
-                        setErrorResponse(undefined)
-                    }, 3000);
-                }   
-                
+                    const bckErrors = response.response.errList; //Array of Errors
+                    setErrorResponse(bckErrors);
+                    setTimeout(()=>{
+                        setErrorResponse(undefined);
+                    },3000)
+                }  
             })
         }} btnName="Sign Up" isDisable={(signUpPayload.emailId==undefined || signUpPayload.password==undefined || signUpPayload.firstName==undefined || signUpPayload.lastName==undefined ||signUpPayload.emailId.trim()==""
             || signUpPayload.password.trim()=="" || signUpPayload.firstName.trim()=="" || signUpPayload.lastName.trim()==""
         )?true:false}></CustomButton>
-        <div className="flex justify-center my-3">
+        <div className="flex justify-center mt-10">
             <div>Already a User ? Go To </div>
             <button className="bg-white text-black rounded-xl px-4 mx-3" onClick={()=>{
                 setFirstName(undefined);
