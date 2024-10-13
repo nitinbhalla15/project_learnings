@@ -7,6 +7,7 @@ import { userDetailsSelector, userEmailId, userFirstName, userLastName, userPass
 import {useNavigate} from "react-router-dom"
 import { ErrorAtom } from "../recoil-state-store/ErrorAtom";
 import { userDetailsAtom } from "../recoil-state-store/DashboardAtomState";
+import { BACKEND_SERVER } from "../env-store";
 
 export default function SignUpPage() {
     const signUpPayload = useRecoilValue(userDetailsSelector);
@@ -32,7 +33,7 @@ export default function SignUpPage() {
             setPassword(e.target.value);
         }}></InputBox>
         <CustomButton clickFunction={()=>{
-            fetch('http://localhost:8080/auth/signup',
+            fetch(`https://${BACKEND_SERVER}/auth/signup`,
                 {method:"POST",
                 headers:{
                     'Content-Type':"application/json"

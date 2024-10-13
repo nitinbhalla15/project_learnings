@@ -7,6 +7,7 @@ import { sendAmount, toMoneyAtom } from "../recoil-state-store/transferMoney";
 import { useNavigate } from "react-router-dom"
 import { currentBalane, userDetailsAtom } from "../recoil-state-store/DashboardAtomState";
 import { ErrorAtom } from "../recoil-state-store/ErrorAtom";
+import { BACKEND_SERVER } from "../env-store";
 
 
 export default function TransferMoney() {
@@ -34,7 +35,7 @@ export default function TransferMoney() {
             }
         }}></InputBox>
         <CustomButton clickFunction={() => {
-            fetch(`http://localhost:8080/api/v1/transferMoney/${userDetails.userEmail}/${toUser}/${amount}`,
+            fetch(`https://${BACKEND_SERVER}/api/v1/transferMoney/${userDetails.userEmail}/${toUser}/${amount}`,
                 {
                     method: "POST",
                     headers: {

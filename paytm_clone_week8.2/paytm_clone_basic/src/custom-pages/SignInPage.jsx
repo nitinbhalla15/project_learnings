@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import ErrorComponent from "../custom-components/ErrorComponent";
 import { ErrorAtom } from "../recoil-state-store/ErrorAtom";
 import { userDetailsAtom } from "../recoil-state-store/DashboardAtomState";
+import {BACKEND_SERVER} from "../env-store";
 
 export default function SignInPage() {
     const userDetails = useRecoilValue(userDetailsSelector);
@@ -26,7 +27,7 @@ export default function SignInPage() {
         }} title="Password" boxtype={"password"}></InputBox>
         <CustomButton clickFunction={() => {
             const signInPayload = { email: userDetails.emailId, password: userDetails.password };
-            fetch("http://localhost:8080/auth/login", {
+            fetch(`https://${BACKEND_SERVER}/auth/login`, {
                 method: "POST",
                 headers: {
                     'Content-Type': "application/json",

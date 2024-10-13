@@ -3,8 +3,8 @@ spring:
     name: pay-tm-bck
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/paytm_basic_db
-    username: nitinbhalla
+    url: jdbc:postgresql://localhost:5432/paper_pay_db
+    username: postgres
     password: postgres
     driverClassName: org.postgresql.Driver
   jpa:

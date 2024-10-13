@@ -6,6 +6,7 @@ import UserList from "../custom-components/UserListComp";
 import SearchBox from "../custom-components/SearchBox";
 import { currentBalane, userDetailsAtom, userList, userNotFoundAtom } from "../recoil-state-store/DashboardAtomState";
 import { userEmailId } from "../recoil-state-store/SignUpStateAtoms";
+import { BACKEND_SERVER } from "../env-store";
 
 export default function DashboardPage() {
     const userDetails = useRecoilValue(userDetailsAtom);
@@ -22,7 +23,7 @@ export default function DashboardPage() {
             {
                 e.target.value.trim() != "" ?
                 clock = setTimeout(() => {
-                    fetch(`http://localhost:8080/api/v1/searchUsers/${e.target.value}`, {
+                    fetch(`https://${BACKEND_SERVER}/api/v1/searchUsers/${e.target.value}`, {
                         method: "GET",
                         headers: {
                             'Content-Type': "application/json",
